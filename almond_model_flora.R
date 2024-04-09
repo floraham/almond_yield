@@ -23,8 +23,7 @@ library(tidyverse)
 clim <- read.csv("~/Documents/2_Areas/Areas_MEDS/Spring_Quarter/EDS230_Env_mod/homework/assignment2/almond_yield/clim.csv") %>% data.frame()
 
 
-almond_yield <- function(clim, min_T_feb_coef = -0.015, min_T_feb_coefsq = -0.0046, precip_jan_coef = -0.07,
-precip_jan_coefsq = 0.0043, intercept = 0.28) {
+almond_yield <- function(clim) {
   
   #extract_min_T_feb from climate data df
   min_temp <- climate_data %>% group_by(month, year) %>% summarize(min_T = min(tmin_c), .groups = "drop")
@@ -37,11 +36,11 @@ precip_jan_coefsq = 0.0043, intercept = 0.28) {
   
   #calculation equation
   al_yield = 
-    min_T_feb_coef * (feb_min_T) +
-    min_T_feb_coefsq * ((feb_min_T) ^ 2) +
-    precip_jan_coef * (jan_precip_sum) +
-    precip_jan_coefsq * ((jan_precip_sum) ^ 2) + 
-    intercept
+    -0.015 * (feb_min_T) +
+    -0.0046 * ((feb_min_T) ^ 2) +
+    -0.07 * (jan_precip_sum) +
+    0.0043 * ((jan_precip_sum) ^ 2) + 
+    0.28
   
   #find max, min, mean of yields 
   maxy = max(al_yield)
