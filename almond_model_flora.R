@@ -20,7 +20,7 @@ library(here)
 library(tidyverse)
 
 #load climate data
-clim <- read.csv("~/Documents/2_Areas/Areas_MEDS/Spring_Quarter/EDS230_Env_mod/homework/assignment2/almond_yield/clim.csv") %>% data.frame()
+climate_data <- read.csv("~/Documents/2_Areas/Areas_MEDS/Spring_Quarter/EDS230_Env_mod/homework/assignment2/almond_yield/clim.csv") %>% data.frame()
 
 
 almond_yield <- function(clim) {
@@ -51,6 +51,6 @@ almond_yield <- function(clim) {
   return(list(al_yield, maxy, miny, meany))
 }
 
-almond_yield(climate_data) 
+almond_yield(clim) 
 
 
