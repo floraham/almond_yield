@@ -51,6 +51,6 @@ almond_yield <- function(clim) {
   return(list(al_yield, maxy, miny, meany))
 }
 
-almond_yield(climate_data, min_T_feb_coef = -0.015, min_T_feb_coefsq = -0.0046, precip_jan_coef = -0.07, precip_jan_coefsq = 0.0043, intercept = 0.28) 
+almond_yield(climate_data) 
 
 
