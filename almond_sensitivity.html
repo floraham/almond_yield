@@ -138,7 +138,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>mean_acreage <span class="ot">=</span> <span class="dv">300</span></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="do">###make sure this is the same for both parameters </span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>base_unit_price <span class="ot">=</span> <span class="dv">3950</span>  <span class="co"># https://www.ers.usda.gov/data-products/chart-gallery/gallery/chart-detail/?chartId=107823</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>base_unit_price <span class="ot">=</span> <span class="dv">4000</span>  <span class="co"># https://www.ers.usda.gov/data-products/chart-gallery/gallery/chart-detail/?chartId=107823</span></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="do">###unit_price... runif() for uniform distributions because we assume that price changes due to a variety of factors across many years</span></span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
@@ -155,11 +155,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(parms, <span class="dv">5</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  unit_price    acres
-1   4375.273 312.4946
-2   3705.014 287.8496
-3   3437.756 296.1344
-4   3646.107 454.6885
-5   4065.287 290.2296</code></pre>
+1   4464.888 245.1039
+2   3543.887 357.0248
+3   4138.965 265.8154
+4   4214.540 299.2803
+5   4412.576 402.4551</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## results = parameters that do chage %&gt;%  pmap (function, parameters that don't change )</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>results <span class="ot">=</span> parms <span class="sc">%&gt;%</span> <span class="fu">pmap</span>(calculate_profit, </span>
@@ -169,11 +169,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(results[[<span class="dv">1</span>]],<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  year gross_profit       yield
-1 1989     65581.88  0.04321564
-2 1990  10224512.29  9.67477539
-3 1991  73131794.48 69.31641316
-4 1992  16709866.15 15.82346139
-5 1993  21636685.17 20.49451926</code></pre>
+1 1989      56701.2  0.04321564
+2 1990    8236375.7  9.67477539
+3 1991   58887484.9 69.31641316
+4 1992   13458193.5 15.82346139
+5 1993   17425124.5 20.49451926</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">

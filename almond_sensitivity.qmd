@@ -46,7 +46,7 @@ nsamples = 150
 mean_acreage = 300
 
 ###make sure this is the same for both parameters 
-base_unit_price = 3950  # https://www.ers.usda.gov/data-products/chart-gallery/gallery/chart-detail/?chartId=107823
+base_unit_price = 4000  # https://www.ers.usda.gov/data-products/chart-gallery/gallery/chart-detail/?chartId=107823
 
 ###unit_price... runif() for uniform distributions because we assume that price changes due to a variety of factors across many years
 
