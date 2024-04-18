@@ -1,6 +1,6 @@
 #' simple model of almond yield anomaly response to climate
 #'
-#' @param climate_data 
+#' @param clim climate data csv
 #' @param min_T_feb_coef  coefficient of daily times series of min T in Feb between years 1988-2010, default=-0.015
 #' @param min_T_feb_coefsq default=-0.0046
 #' @param precip_jan_coef coefficient of daily times series of sum precip in Jan between years 1988-2010, default = -0.07 
@@ -21,7 +21,6 @@ library(tidyverse)
 
 #load climate data
 climate_data <- read.csv("~/Documents/2_Areas/Areas_MEDS/Spring_Quarter/EDS230_Env_mod/homework/assignment2/almond_yield/clim.csv") %>% data.frame()
-
 
 almond_yield <- function(clim) {
   
