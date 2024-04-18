@@ -28,7 +28,7 @@ library(tidyverse)
 ##sourcing yield and profit functions 
 source(here("almond_model_flora.R"))
 source(here("profit_script.R"))
-
+climate_data <- read.csv(here("clim.csv"))
                                                                             
 #storing results
 yield_result = almond_yield(climate_data)
@@ -50,7 +50,7 @@ base_unit_price = 3950  # https://www.ers.usda.gov/data-products/chart-gallery/g
 
 ###unit_price... runif() for uniform distributions because we assume that price changes due to a variety of factors across many years
 
-# FLORA: unit price in the profit function I have is 4000, are we removing that?
+# 
 unit_price = runif(min = base_unit_price - percentage_uncertainty * base_unit_price,  max = base_unit_price + percentage_uncertainty * base_unit_price, n = nsamples)
 
 # rnorm() for normal distributions -- assuming that the demand for almonds is relatively stable between 1989 - 2010 

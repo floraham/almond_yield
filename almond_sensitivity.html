@@ -101,7 +101,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<p>In your same groups -</p>
 <p>Develop a profit model for your almond yield (you can make this up - think about what the parameters would be)</p>
 <p>you might assume a baseline profit and then adjust according to the anomaly</p>
 <p>there are many ways to combine the almond yield and profit functions; you can have the profit function “call”/use the almond yield function; or create a wrapper function that calls them in sequence (first the almond yield and then the profit function)</p>
@@ -111,8 +110,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Default value from the function is n</li>
 <li>Code so that its easy to change</li>
 </ul>
-<p>Submit as a group: an Rmarkdown document, your R files for almond yield and profit model on Canvas- Due Date Thursday April 18</p>
-<p>Submit as a group: a knitted Rmarkdown document that includes your workflow graph, paragraph , and your R files for almond yield and profit model</p>
 <section id="sourcing-our-yield-and-profit-functions-and-bringing-in-climate-data-attach-libraries" class="level2">
 <h2 class="anchored" data-anchor-id="sourcing-our-yield-and-profit-functions-and-bringing-in-climate-data-attach-libraries">Sourcing our yield and profit functions, and bringing in climate data, attach libraries</h2>
 <div class="cell">
@@ -123,12 +120,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="do">##sourcing yield and profit functions </span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">here</span>(<span class="st">"almond_model_flora.R"</span>))</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">here</span>(<span class="st">"profit_script.R"</span>))</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>climate_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">here</span>(<span class="st">"clim.csv"</span>)) <span class="sc">%&gt;%</span> <span class="fu">data.frame</span>()                                                                             </span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">#storing results</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>yield_result <span class="ot">=</span> <span class="fu">almond_yield</span>(climate_data)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>profit_result <span class="ot">=</span> <span class="fu">calculate_profit</span>(climate_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>climate_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">here</span>(<span class="st">"clim.csv"</span>))</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>                                                                            </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#storing results</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>yield_result <span class="ot">=</span> <span class="fu">almond_yield</span>(climate_data)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>profit_result <span class="ot">=</span> <span class="fu">calculate_profit</span>(climate_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="informal-almond-sensitivity-analysis" class="level2">
@@ -144,24 +140,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="do">###make sure this is the same for both parameters </span></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>base_unit_price <span class="ot">=</span> <span class="dv">3950</span>  <span class="co"># https://www.ers.usda.gov/data-products/chart-gallery/gallery/chart-detail/?chartId=107823</span></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="do">###unit_price... runif() for uniform distributions because we assume that price changes do to a variety of factors across many years</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>unit_price <span class="ot">=</span> <span class="fu">runif</span>(<span class="at">min =</span> base_unit_price <span class="sc">-</span> percentage_uncertainty <span class="sc">*</span> base_unit_price,  <span class="at">max =</span> base_unit_price <span class="sc">+</span> percentage_uncertainty <span class="sc">*</span> base_unit_price, <span class="at">n =</span> nsamples)</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># rnorm() for normal distributions -- assuming that the demand for almonds is relatively stable between 1989 - 2010 </span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>sd_acreage <span class="ot">&lt;-</span> mean_acreage <span class="sc">*</span> percentage_uncertainty <span class="do">##at 0.15 uncertainty this is +- 45 acres</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>acres <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">mean =</span> <span class="dv">300</span>, <span class="at">sd =</span> sd_acreage, <span class="at">n =</span> nsamples)</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Save these distributions in a data frame object; these are the parameters that we are changing </span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>parms <span class="ot">=</span> <span class="fu">cbind.data.frame</span>(unit_price, acres)</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(parms, <span class="dv">5</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="do">###unit_price... runif() for uniform distributions because we assume that price changes due to a variety of factors across many years</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>unit_price <span class="ot">=</span> <span class="fu">runif</span>(<span class="at">min =</span> base_unit_price <span class="sc">-</span> percentage_uncertainty <span class="sc">*</span> base_unit_price,  <span class="at">max =</span> base_unit_price <span class="sc">+</span> percentage_uncertainty <span class="sc">*</span> base_unit_price, <span class="at">n =</span> nsamples)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># rnorm() for normal distributions -- assuming that the demand for almonds is relatively stable between 1989 - 2010 </span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>sd_acreage <span class="ot">&lt;-</span> mean_acreage <span class="sc">*</span> percentage_uncertainty <span class="do">##at 0.15 uncertainty this is +- 45 acres</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>acres <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">mean =</span> <span class="dv">300</span>, <span class="at">sd =</span> sd_acreage, <span class="at">n =</span> nsamples)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Save these distributions in a data frame object; these are the parameters that we are changing </span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>parms <span class="ot">=</span> <span class="fu">cbind.data.frame</span>(unit_price, acres)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(parms, <span class="dv">5</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  unit_price    acres
-1   4019.679 326.0772
-2   4161.311 228.1934
-3   4081.176 254.2445
-4   3605.139 285.4834
-5   4397.103 301.1423</code></pre>
+1   4375.273 312.4946
+2   3705.014 287.8496
+3   3437.756 296.1344
+4   3646.107 454.6885
+5   4065.287 290.2296</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## results = parameters that do chage %&gt;%  pmap (function, parameters that don't change )</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>results <span class="ot">=</span> parms <span class="sc">%&gt;%</span> <span class="fu">pmap</span>(calculate_profit, </span>
@@ -171,11 +169,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(results[[<span class="dv">1</span>]],<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  year gross_profit       yield
-1 1989     62552.22  0.04321564
-2 1990   9546254.59  9.67477539
-3 1991  68272313.10 69.31641316
-4 1992  15600550.00 15.82346139
-5 1993  20199900.86 20.49451926</code></pre>
+1 1989     65581.88  0.04321564
+2 1990  10224512.29  9.67477539
+3 1991  73131794.48 69.31641316
+4 1992  16709866.15 15.82346139
+5 1993  21636685.17 20.49451926</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -214,7 +212,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="profit-vs-unit_price" class="level2">
 <h2 class="anchored" data-anchor-id="profit-vs-unit_price">2) profit vs unit_price</h2>
-<p>The second graph shows how gross profit varies by the unit_price parameter. Similarly, we see that the result is also quite linear, meaning that the gross profit is insensitive to chagnes in acres.</p>
+<p>The second graph shows how gross profit varies by the unit_price parameter. Similarly, we see that the result is also quite linear, meaning that the gross profit is insensitive to changes in acres.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## for profit vs. unit_price </span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>profit_result_parms <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> unit_price, <span class="at">y =</span> gross_profit, <span class="at">col =</span> acres)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.8</span>) <span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">"gross profit varying by unit_price parameter"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -233,8 +231,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="almond_sensitivity_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<section id="short-paragraph-to-summarize-you-interpretation-of-your-model-results-e.g-what-do-take-away-from-your-model-and-sensitivity-analysis" class="level3">
-<h3 class="anchored" data-anchor-id="short-paragraph-to-summarize-you-interpretation-of-your-model-results-e.g-what-do-take-away-from-your-model-and-sensitivity-analysis">Short paragraph to summarize you interpretation of your model results (e.g what do ‘take away’ from your model and sensitivity analysis)</h3>
+<section id="short-paragraph-to-summarize-interpretation-of-model-results-e.g-what-do-take-away-from-your-model-and-sensitivity-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="short-paragraph-to-summarize-interpretation-of-model-results-e.g-what-do-take-away-from-your-model-and-sensitivity-analysis">Short paragraph to summarize interpretation of model results (e.g what do ‘take away’ from your model and sensitivity analysis)</h3>
+<p>In our analysis exploring the impact of varying acreage and almond price on gross profit from almond farming, we used simulations with a 15% uncertainty level generating 150 samples for acreage and unit price. Changes in acreage were sampled from a normal distribution, while almond price changes were sampled from a uniform distribution. The results showed that gross profit exhibited a fairly linear response to changes in both acreage and almond price, indicating a relatively low sensitivity to these factors. A graph depicting gross profit against acreage revealed a stable relationship, with similar findings observed in the graph plotting gross profit against almond price. Additionally, when considering yearly variations from 1989 to 2010 based on changes in acreage and almond price, we observed notable variability in gross profit which highlights the importance of these parameters in influencing annual profitability in almond farming.</p>
 </section>
 </section>
 
