@@ -1,0 +1,133 @@
+---
+title: "almond_sensitivity_hw3"
+format: html
+editor: visual
+author: "Kristina and Flora" 
+---
+
+In your same groups -
+
+Develop a profit model for your almond yield (you can make this up - think about what the parameters would be)
+
+you might assume a baseline profit and then adjust according to the anomaly
+
+there are many ways to combine the almond yield and profit functions; you can have the profit function "call"/use the almond yield function; or create a wrapper function that calls them in sequence (first the almond yield and then the profit function)
+
+
+\+ Do a simple informal sensitivity analysis of almond yield profit using at least 2 parameters
+
+-   Assume +-15% uncertainty in *x* parameter
+-   Default value from the function is n
+-   Code so that its easy to change
+
+
+
+Submit as a group: an Rmarkdown document, your R files for almond yield and profit model on Canvas- Due Date Thursday April 18
+
+Submit as a group: a knitted Rmarkdown document that includes your workflow graph, paragraph , and your R files for almond yield and profit model
+
+
+## Sourcing our yield and profit functions, and bringing in climate data, attach libraries
+```{r results= FALSE, warning=FALSE, message=FALSE}
+
+library(dplyr)
+library(here)
+library(tidyverse)
+
+##sourcing yield and profit functions 
+source(here("almond_model_flora.R"))
+source(here("profit_script.R"))
+
+
+climate_data <- read.csv(here("clim.csv")) %>% data.frame()                                                                             
+#storing results
+yield_result = almond_yield(climate_data)
+profit_result = calculate_profit(climate_data)
+```
+
+
+## Informal almond sensitivity analysis 
+
+```{r }
+# generate samples for both parameters: unit_price, acres
+# let's assume uncertainty of 15%
+
+percentage_uncertainty = 0.15 
+nsamples = 150
+mean_acreage = 300
+
+###make sure this is the same for both parameters 
+base_unit_price = 3950  # https://www.ers.usda.gov/data-products/chart-gallery/gallery/chart-detail/?chartId=107823
+
+###unit_price... runif() for uniform distributions because we assume that price changes do to a variety of factors across many years
+unit_price = runif(min = base_unit_price - percentage_uncertainty * base_unit_price,  max = base_unit_price + percentage_uncertainty * base_unit_price, n = nsamples)
+
+# rnorm() for normal distributions -- assuming that the demand for almonds is relatively stable between 1989 - 2010 
+sd_acreage <- mean_acreage * percentage_uncertainty ##at 0.15 uncertainty this is +- 45 acres
+acres = rnorm(mean = 300, sd = sd_acreage, n = nsamples)
+
+
+# Save these distributions in a data frame object; these are the parameters that we are changing 
+parms = cbind.data.frame(unit_price, acres)
+head(parms, 5) 
+
+
+## results = parameters that do chage %>%  pmap (function, parameters that don't change )
+results = parms %>% pmap(calculate_profit, 
+                              climate_data = climate_data,
+                              baseline_profit = 20000, 
+                              unit_cost = 1000)
+head(results[[1]],5)
+length(results)
+
+#####
+# now we can extract results from the list as above
+# Apply a function to each element in 'results' and combine results into a data frame
+profit_results <- map_df(
+  results,             # List of data frames or objects containing rows of results 
+  `[`,                 # the subsetting function to extract specific elements; the backticks indicate that it's being used as a function rather than a standard operator. 
+  c("gross_profit", "year")     # Argument passed to the subsetting function (column name to extract)
+)
+
+
+# and we can add the parameter values for each run
+profit_result_parms = cbind.data.frame(profit_results, parms)
+```
+
+- Create 2 graphs of the results - you can decide what is the most meaningful graph
+
+
+# Graphs 1 & 2
+ We evaluate the sensitivity by observing how gross profit varies by unit_price and acres
+
+## 1) profit vs acreage
+The first graph shows how gross profit varies by the acres parameter. We see that the result is quite linear, meaning that the gross profit is insensitive to changes in acres. 
+
+
+```{r message = FALSE, warning = FALSE}
+## for profit vs. acres 
+profit_result_parms %>% ggplot(aes(x = acres, y = gross_profit, col =unit_price)) + geom_point(alpha=0.8) + geom_smooth(method = "lm", se = FALSE) + ggtitle("gross profit varying by acres parameter")
+```
+
+## 2) profit vs unit_price
+The second graph shows how gross profit varies by the unit_price parameter. Similarly, we see that the result is also quite linear, meaning that the gross profit is insensitive to changes in acres. 
+```{r message = FALSE, warning = FALSE}
+## for profit vs. unit_price 
+profit_result_parms %>% ggplot(aes(x = unit_price, y = gross_profit, col = acres)) + geom_point(alpha=0.8) + geom_smooth(method = "lm", se = FALSE) + ggtitle("gross profit varying by unit_price parameter")
+```
+
+# Graph 3: Variability across time due to changing inputs 
+
+Looking at this box plot of gross profit varying across the years 1989 to 2010 as a result of changes in acreage harvested the price set on almonds per ton, we see that there's greater relative variability for gross profit for years 1995, 1997, 2001, 2005, and 2008 (by visual observation) compared to all other years. 
+
+```{r}
+ggplot(profit_result_parms, aes(x=as.factor(year), y=gross_profit)) + geom_boxplot() + ggtitle("variability of gross profit is highest for years 1995, 1997, 2001, 2005, and 2008") + ylab("gross profit") + xlab("years")
+```
+
+### Short paragraph to summarize interpretation of model results (e.g what do 'take away' from your model and sensitivity analysis)
+
+In our analysis exploring the impact of varying acreage and almond price on gross profit from almond farming, we used simulations with a 15% uncertainty level generating 150 samples for acreage and unit price. Changes in acreage were sampled from a normal distribution, while almond price changes were sampled from a uniform distribution. The results showed that gross profit exhibited a fairly linear response to changes in both acreage and almond price, indicating a relatively low sensitivity to these factors. A graph depicting gross profit against acreage revealed a stable relationship, with similar findings observed in the graph plotting gross profit against almond price. Additionally, when considering yearly variations from 1989 to 2010 based on changes in acreage and almond price, we observed notable variability in gross profit which highlights the importance of these parameters in influencing annual profitability in almond farming.
+
+
+
+
