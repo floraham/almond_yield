@@ -13,13 +13,6 @@
 #' @examples
 
 
-#--------------probably delete this ---------
-# source("~/Documents/2_Areas/Areas_MEDS/Spring_Quarter/EDS230_Env_mod/homework/almond_hws/almond_yield/almond_model_flora.R")
-# 
-# #load climate data
-# climate_data <- read.csv(here("clim.csv")) %>% data.frame()
-#---------------------------------------------
-
 calculate_profit <- function(climate_data, 
                               baseline_profit = 20000, 
                               acres = 300, 
